@@ -35,16 +35,17 @@ namespace Application
             foreach (var veiculo in veiculos)
             {
                 var vagasOcupadas = context.Vagas.Include(x => x.Veiculo)
-                    .Where(v => v.Veiculo.IdVeiculo == veiculo.IdVeiculo && v.Ocupada).ToList();
+                    .Where(v => v.VeiculoId == veiculo.IdVeiculo && v.Ocupada).ToList();
 
-                foreach (var vaga in vagasOcupadas)
+                if (vagasOcupadas.Any())
                 {
+                    var vagaIds = vagasOcupadas.Select(v => v.IdVaga).ToList();
                     lista.Add(new
                     {
                         IdVeiculo = veiculo.IdVeiculo,
                         Placa = veiculo.Placa,
                         Cor = veiculo.Cor,
-                        VagaId = vaga.IdVaga,
+                        VagaIds = vagaIds,
                         HoraEntrada = veiculo.HoraEntrada
                     });
                 }
@@ -52,6 +53,7 @@ namespace Application
 
             return lista;
         }
+
 
         public (string mensagem, List<int> vagaIdsUtilizadas) EstacionarVeiculo(Veiculo veiculo)
         {
@@ -90,7 +92,7 @@ namespace Application
             }
             else if (veiculo.Tipo == Domain.Enum.TipoVeiculo.Carro)
             {
-                if (vaga.TipoVaga == Domain.Enum.TipoVeiculo.Carro || vaga.TipoVaga == Domain.Enum.TipoVeiculo.Van)
+                if (vaga.TipoVaga == Domain.Enum.TipoVeiculo.Carro)
                 {
                     if (!vaga.Ocupada)
                     {
@@ -110,23 +112,29 @@ namespace Application
             }
             else if (veiculo.Tipo == Domain.Enum.TipoVeiculo.Van)
             {
-                if (vaga.TipoVaga == Domain.Enum.TipoVeiculo.Carro || vaga.TipoVaga == Domain.Enum.TipoVeiculo.Van)
+                if (vaga.TipoVaga == Domain.Enum.TipoVeiculo.Van)
+                {
+                    if (!vaga.Ocupada)
+                    {
+                        EstacionarVeiculoComum(veiculo, vaga);
+                        _vagaIdsUtilizadas.Add(vaga.IdVaga);
+                        return ($"Veículo Placa {veiculo.Placa} cor {veiculo.Cor} estacionado com sucesso na vaga {veiculo.VagaId} às {DateTime.Now}", _vagaIdsUtilizadas);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("A vaga está ocupada.");
+                    }
+                }
+                else if (vaga.TipoVaga == Domain.Enum.TipoVeiculo.Carro)
                 {
                     var vagasDisponiveis = context.Vagas
-                        .Where(v => !v.Ocupada && (v.TipoVaga == Domain.Enum.TipoVeiculo.Carro || v.TipoVaga == Domain.Enum.TipoVeiculo.Van))
-                        .OrderBy(v => v.IdVaga)
-                        .Take(3)
-                        .ToList();
+                .Where(v => !v.Ocupada && (v.TipoVaga == Domain.Enum.TipoVeiculo.Carro || v.TipoVaga == Domain.Enum.TipoVeiculo.Van))
+                .OrderBy(v => v.IdVaga)
+                .Take(3)
+                .ToList();
 
                     if (vagasDisponiveis.Count == 3)
                     {
-                        foreach (var vagaDisponivel in vagasDisponiveis)
-                        {
-                            vagaDisponivel.Ocupada = true;
-                            context.Vagas.Update(vagaDisponivel);
-                            _vagaIdsUtilizadas.Add(vagaDisponivel.IdVaga);
-                        }
-
                         var novaVan = new Veiculo
                         {
                             Tipo = Domain.Enum.TipoVeiculo.Van,
@@ -138,6 +146,14 @@ namespace Application
 
                         context.Veiculos.Add(novaVan);
                         context.SaveChanges();
+
+                        foreach (var vagaDisponivel in vagasDisponiveis)
+                        {
+                            vagaDisponivel.Ocupada = true;
+                            vagaDisponivel.VeiculoId = novaVan.IdVeiculo;
+                            context.Vagas.Update(vagaDisponivel);
+                            _vagaIdsUtilizadas.Add(vagaDisponivel.IdVaga);
+                        }
 
                         EstacionarVeiculoComum(veiculo, vaga);
                         return (_vagaIdsUtilizadas.Any() ? (null, _vagaIdsUtilizadas) : ($"Veículo Placa {veiculo.Placa} cor {veiculo.Cor} estacionado com sucesso na vaga {_vagaIdsUtilizadas} às {DateTime.Now}", null));
@@ -181,6 +197,13 @@ namespace Application
             }
 
             context.SaveChanges();
+
+            if (!context.Vagas.Any(v => v.VeiculoId == idVeiculo))
+            {
+                context.Veiculos.Remove(veiculo);
+            }
+
+            context.SaveChanges();
         }
 
         private void EstacionarVeiculoComum(Veiculo veiculo, Vaga vaga)
@@ -198,9 +221,15 @@ namespace Application
 
         public int TipoVeiculo(TipoVeiculo tipoVeiculo)
         {
-            var vagas = context.Vagas.Where(v => v.Veiculo != null && v.Veiculo.Tipo == tipoVeiculo).ToList();
-            return vagas.Count;
+            var vagasOcupadas = context.Vagas
+                .Where(v => v.Veiculo != null && v.Veiculo.Tipo == tipoVeiculo)
+                .Select(v => v.VeiculoId)
+                .Distinct()
+                .ToList();
+
+            return vagasOcupadas.Count;
         }
+
 
         public int TotalVagas()
         {

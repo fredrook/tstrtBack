@@ -87,3 +87,4 @@ C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Application\obj\Debug\net7.0
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Application\obj\Debug\net7.0\refint\Application.dll
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Application\obj\Debug\net7.0\Application.pdb
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Application\obj\Debug\net7.0\ref\Application.dll
+C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Application\obj\Debug\net7.0\Application.sourcelink.json

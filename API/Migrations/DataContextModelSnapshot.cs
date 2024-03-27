@@ -52,9 +52,14 @@ namespace API.Migrations
                     b.Property<int>("TipoVaga")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("VeiculoId")
+                        .HasColumnType("integer");
+
                     b.HasKey("IdVaga");
 
                     b.HasIndex("EstacionamentoIdEstacionamento");
+
+                    b.HasIndex("VeiculoId");
 
                     b.ToTable("Vagas");
                 });
@@ -85,9 +90,6 @@ namespace API.Migrations
 
                     b.HasKey("IdVeiculo");
 
-                    b.HasIndex("VagaId")
-                        .IsUnique();
-
                     b.ToTable("Veiculos");
                 });
 
@@ -96,25 +98,17 @@ namespace API.Migrations
                     b.HasOne("Domain.Entities.Estacionamento", null)
                         .WithMany("Vagas")
                         .HasForeignKey("EstacionamentoIdEstacionamento");
-                });
 
-            modelBuilder.Entity("Domain.Entities.Veiculo", b =>
-                {
-                    b.HasOne("Domain.Entities.Vaga", null)
-                        .WithOne("Veiculo")
-                        .HasForeignKey("Domain.Entities.Veiculo", "VagaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.Veiculo", "Veiculo")
+                        .WithMany()
+                        .HasForeignKey("VeiculoId");
+
+                    b.Navigation("Veiculo");
                 });
 
             modelBuilder.Entity("Domain.Entities.Estacionamento", b =>
                 {
                     b.Navigation("Vagas");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Vaga", b =>
-                {
-                    b.Navigation("Veiculo");
                 });
 #pragma warning restore 612, 618
         }

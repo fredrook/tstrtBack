@@ -13,23 +13,29 @@ namespace Domain.Entities
         public bool Ocupada { get; set; }
         public Veiculo Veiculo { get; set; }
         public TipoVeiculo TipoVaga { get; set; }
+        public int? VeiculoId { get; set; }
 
         public Vaga()
         {
 
         }
 
-        public Vaga(TipoVeiculo tipoVaga, int idVaga)
+        public Vaga(TipoVeiculo tipoVaga, int idVaga, int? veiculoId)
         {
             this.Ocupada = false;
             this.TipoVaga = tipoVaga;
             this.IdVaga = idVaga;
+            this.VeiculoId = veiculoId;
         }
 
         public void Estacionar(Veiculo veiculo)
         {
             this.Veiculo = veiculo;
             this.Ocupada = true;
+
+            if (veiculo.IdVeiculo < 0)
+                this.VeiculoId = veiculo.IdVeiculo;
+
         }
 
         public void Liberar()

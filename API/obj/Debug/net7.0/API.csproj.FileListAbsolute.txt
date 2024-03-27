@@ -390,3 +390,4 @@ C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\API\obj\Debug\net7.0\refint\
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\API\obj\Debug\net7.0\API.pdb
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\API\obj\Debug\net7.0\API.genruntimeconfig.cache
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\API\obj\Debug\net7.0\ref\API.dll
+C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\API\obj\Debug\net7.0\API.sourcelink.json

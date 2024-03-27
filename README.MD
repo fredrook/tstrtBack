@@ -78,12 +78,12 @@ O projeto foi desenvolvido usando PostgreSQL, você ao baixar o projeto pode exe
 que é onde está hospedado seu Banco de Dados.
 
 Caso queira rodar em sua maquina, as variaveis são essas:
-PGPASSWORD=fXCBFehLgChuURXNFkphlAlZwDhZhkal psql -h viaduct.proxy.rlwy.net -U postgres -p 39146 -d railway
+PGPASSWORD=tKYVjmTKFdSjRdPHtGcqCscuCtZBTUdU psql -h roundhouse.proxy.rlwy.net -U postgres -p 22466 -d railway
 
-PGPASSWORD: fXCBFehLgChuURXNFkphlAlZwDhZhkal
-PGHOST: viaduct.proxy.rlwy.net
+PGPASSWORD: tKYVjmTKFdSjRdPHtGcqCscuCtZBTUdU
+PGHOST: roundhouse.proxy.rlwy.net
 PGUSER: postgres
-PGPORT: 39146
+PGPORT: 22466
 PGDATABASE: railway
 
 Com estes dados você consegue acesso e conexão ao DB.

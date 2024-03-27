@@ -62,3 +62,4 @@ C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Domain\obj\Debug\net7.0\Doma
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Domain\obj\Debug\net7.0\refint\Domain.dll
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Domain\obj\Debug\net7.0\Domain.pdb
 C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Domain\obj\Debug\net7.0\ref\Domain.dll
+C:\Users\frede\OneDrive\Área de Trabalho\tstrtBack\Domain\obj\Debug\net7.0\Domain.sourcelink.json
