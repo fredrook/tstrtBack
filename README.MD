@@ -1,8 +1,4 @@
 *** Olá avaliador, este projeto foi desenvolvido utilizado C# .NET usando Entity Framework Core para tentar sanar as espectativas requeridas como regra de negócios de um Estacionamento. ***
-**<span style="color:red; font-weight: 600">
-A demais, peço desculpas por quaisquer erros, falhas ou omições em algum trecho ou lógica implementada, estou literalmente com dengue, muito debilitado e fazendo o teste, caso não passe, não quero o peso na consciência de não ter feito meu melhor, mesmo nesta situação. Agradeço por avaliarem meu teste, se tudo ocorrer bem, nós vemos em breve.
-</span>**
-
 
 ***INDEX***
 1 - Estruturação, Padrão de Arquitetura 
